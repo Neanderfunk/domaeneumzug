@@ -27,11 +27,11 @@ ansible-playbook iterate_csv.yml
 
 Anschließend kontolliere in der **routerdomaenechange.yml** folgende Parameter:
 
-*domaenevorher* gibt die Domäne an in der die Router aktuell sind.
-*update_fwserver* gibt mit **yes** an, dass die Firmwareupdate Server Liste aktualisiert werden soll. Bei **no** werden diese nicht aktualisiert.
-*force_update* gibt mit **yes** an, dass auf dem Router `autoupdater -f --force-version` ausgeführt wird am Ende. Bei **no** wird kein `autoupdater` ausgeführt.
+*domaenevorher* gibt die Domäne an in der die Router aktuell sind.<br>
+*update_fwserver* gibt mit **yes** an, dass die Firmwareupdate Server Liste aktualisiert werden soll. Bei **no** werden diese nicht aktualisiert.<br>
+*force_update* gibt mit **yes** an, dass auf dem Router `autoupdater -f --force-version` ausgeführt wird am Ende. Bei **no** wird kein `autoupdater` ausgeführt.<br>
 
-Sollten die Parameter passen, dann führe folgenden Befehl aus:
+Sollten die Parameter passen, dann führe folgenden Befehl aus:<br>
 **Achte darauf die keyfile Angabe an dein System anzupassen. Es muss der passende private key angegeben werden, der auf den Routern hinterlegt ist.**
 
 ```bash
