@@ -1,0 +1,45 @@
+---
+- hosts: router
+  gather_facts: false
+  become: false
+  vars:
+    domaenevorher: "11_lvr"
+    update_fwserver: yes
+    force_update: yes
+  tasks:
+    - name: Get Update Server
+      ansible.builtin.raw: uci get autoupdater.stable.mirror
+      register: updateserver
+
+    - name: Aktuelle Update Server
+      ansible.builtin.debug:
+        msg: "{{ updateserver.stdout_lines[0].split() }}"
+      when: updateserver.stdout_lines
+
+    - name: Setze neue Update Server Variable
+      set_fact:
+        updateserverlist: "{{ updateserver.stdout_lines[0].replace(domaenevorher, domaene).split() }}"
+      when: update_fwserver
+
+    - name: Neue Update Server
+      ansible.builtin.debug:
+        var: updateserverlist
+      when: update_fwserver
+
+    - name: Lösche aktuelle Update Server Liste
+      ansible.builtin.raw: uci del autoupdater.stable.mirror
+      when: update_fwserver
+
+    - name: Set New Update Server
+      ansible.builtin.raw: "uci add_list autoupdater.stable.mirror={{ item }}"
+      with_list: " {{ updateserverlist }}"
+      when: update_fwserver
+
+    - name: Commit autoupdater Änderungen
+      ansible.builtin.raw: "uci commit autoupdater"
+      when: update_fwserver
+
+    - name: Autoupdate anstoßen
+      ansible.builtin.raw: "autoupdater -f --force-version"
+      when: force_update
+      ignore_errors: true
